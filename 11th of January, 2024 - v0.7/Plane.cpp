@@ -7,15 +7,15 @@ class Plane {
 
     private:
         static const int numberOfSeats = 10;
-        int FirstClassRange[2] = {0,4};
-        int EconomyRange[2] = {5,9};
-        int FullPlaneRange[2] = {0,9};
+        int FirstClassRange[2] = {0,(numberOfSeats/2)-1};
+        int EconomyRange[2] = {(numberOfSeats/2),(numberOfSeats-1)};
+        int FullPlaneRange[2] = {0,(numberOfSeats-1)};
         Person Passengers[numberOfSeats];
 
     public: 
     Plane() 
     {
-        for (int i = 0; i < 10; i++) 
+        for (int i = 0; i < numberOfSeats; i++) 
         {
             Passengers[i] = new Person(true);
         }
