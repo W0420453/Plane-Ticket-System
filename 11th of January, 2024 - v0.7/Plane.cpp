@@ -6,31 +6,21 @@ using namespace std;
 class Plane {
 
     private:
-        static const int numberOfSeats = 10;
-        int FirstClassRange[2] = {0,(numberOfSeats/2)-1};
-        int EconomyRange[2] = {(numberOfSeats/2),(numberOfSeats-1)};
-        int FullPlaneRange[2] = {0,(numberOfSeats-1)};
-        Person Passengers[numberOfSeats];
+        static const int NUMBEROFSEATS = 10;
+        //Making the assumption that the number of seats are equal between First Class and Economy
+        int FirstClassRange[2] = {0,(NUMBEROFSEATS/2) - 1}; //First half of the plane  (Min, Max)
+        int EconomyRange[2] = {(NUMBEROFSEATS/2),(NUMBEROFSEATS - 1)}; //Back half of the plane (Min, Max)
+        int FullPlaneRange[2] = {0,(NUMBEROFSEATS - 1)}; // Entire Plane (Min, Max)
+        Person Passengers[NUMBEROFSEATS];
 
     public: 
     Plane() 
     {
-        for (int i = 0; i < numberOfSeats; i++) 
+        for (int i = 0; i < NUMBEROFSEATS; i++) 
         {
             Passengers[i] = new Person(true);
         }
     }
-	
-	void JoinWaitlistPrompt(string sectionName) 
-	{
-		string userInput;
-		cout << "\nWould the user like to be added to the waitlist?"  << endl;
-        cin >> userInput;
-		if ( (userInput == "Y") || (userInput == "y"))
-        {
-            waitList(sectionName);
-        }
-	}
 	
     void AddPassenger()
     {
@@ -42,7 +32,7 @@ class Plane {
         }
         else 
         {
-            if(sectionName == "First Class") {FirstClass();}
+            if (sectionName == "First Class") {FirstClass();}
             else if (sectionName == "Economy") {Economy();}
             else { cout << "\nAn Error has Occured, please try again later" << endl;}
         }
@@ -53,7 +43,7 @@ class Plane {
         cout << "Seat Range: " << seatsToCheck[0] << " | End: " << seatsToCheck[1] << endl;
         for (int i = seatsToCheck[0]; i <= seatsToCheck[1]; i++) 
         {
-            cout <<  "Checking Seat[" << i << "] | passenger firstname: " << this -> Passengers[i].firstName << endl;
+            // cout <<  "Checking Seat[" << i << "] | Passenger First Name: " << this -> Passengers[i].firstName << endl;
             if (Passengers[i].firstName == "")
             {
                 return true;
@@ -71,6 +61,7 @@ class Plane {
         while (sectionString == "NotSet")
         {
             cout << "Please type 1 for First Class or 2 for Economy: ";
+            //TODO Input Validation
             cin >> sectionSelection;
 
             if (sectionSelection == "1")
@@ -120,6 +111,8 @@ class Plane {
                 if (Passengers[i].firstName == "")
                 {
                     Passengers[i] = Person(false);
+                    DisplayBoardingPass("First Class", i);
+                    BoardingPass("First Class",i);
                     //print to file, change in a minute
                     break;
                 }
@@ -156,6 +149,8 @@ class Plane {
                 if (Passengers[i].firstName == "")
                 {
                     Passengers[i] = Person(false);
+                    DisplayBoardingPass("Economy", i);
+                    BoardingPass("Economy",i); 
                     //print to file, change in a minute
                     break;
                 }
@@ -163,8 +158,19 @@ class Plane {
 
         }
     }
+	
+	void JoinWaitlistPrompt(string sectionName) 
+	{
+		string userInput;
+		cout << "\nWould the user like to be added to the waitlist?"  << endl;
+        cin >> userInput;
+		if ( (userInput == "Y") || (userInput == "y"))
+        {
+            WaitList(sectionName);
+        }
+	}
 
-    void waitList(string sectionName) 
+    void WaitList(string sectionName) 
     {
         Person waitListPerson = Person(false);
         ofstream wait_list("waitlist.txt", ios::app);
@@ -177,4 +183,23 @@ class Plane {
         { cout << "An Error has occured when attempting to print to a file" << endl;}
     }
 
+    void DisplayBoardingPass(string sectionName, int seatNumber)
+    {
+        cout << endl << "--------------------";
+        cout << Passengers[seatNumber].firstName << " " << Passengers[seatNumber].lastName << " | " << sectionName << " | " << seatNumber << endl;
+    }
+
+    void BoardingPass(string sectionName, int seatNumber)
+    {
+        ofstream boarding_pass("boardingpass.txt", ios::app);
+        if (boarding_pass.is_open())
+        {
+            boarding_pass << Passengers[seatNumber].firstName << " " << Passengers[seatNumber].lastName << " | " << sectionName << " | " << seatNumber << endl;
+            boarding_pass.close();
+        }
+        else 
+        { 
+            cout << "An Error has occured when attempting to print to boardingpass.txt" << endl;
+        }
+    }
 };

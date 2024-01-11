@@ -23,12 +23,12 @@ class Person{
         }
         else 
         {
-            getFullName();
-            getBirthday();
+            GetFullName();
+            GetBirthday();
         }
     }
 
-    void getFullName(){
+    void GetFullName(){
         cout << "Enter your first name: ";
         //needs input validation
         cin >> this -> firstName;
@@ -37,7 +37,7 @@ class Person{
         cin >> this -> lastName;
     }
 
-    void getBirthday(){
+    void GetBirthday(){
         cout << "Enter your birthday Month(mm): "; 
         //needs input validation
         cin >> this -> month;
