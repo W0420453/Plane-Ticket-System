@@ -24,7 +24,7 @@ class Plane {
 	void JoinWaitlistPrompt(string sectionName) 
 	{
 		string userInput;
-		cout << "\nWould the user like to be added to the waitlist?"  << endl;
+		cout << "\nWould you like to be added to the waitlist?"  << endl;
         cin >> userInput;
 		if ( (userInput == "Y") || (userInput == "y"))
         {
