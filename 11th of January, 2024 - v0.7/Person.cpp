@@ -15,7 +15,7 @@ class Person{
     {
         if (isDefault)
         {
-            this -> firstName = ""; 
+            this -> firstName = "a"; 
             this -> lastName = ""; 
             this -> day = 0; 
             this -> month = 0; 

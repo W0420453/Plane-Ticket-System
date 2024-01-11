@@ -16,6 +16,8 @@ class Plane {
     public: 
     Plane() 
     {
+        //Do check for waitlist, attempt to add all customers on the waitlist, before adding new passengers
+        // Also, remove Passengers from waitlist when they are added
         for (int i = 0; i < NUMBEROFSEATS; i++) 
         {
             Passengers[i] = new Person(true);
@@ -40,7 +42,6 @@ class Plane {
 
     bool CheckSeatsAvaliable(int seatsToCheck[2]) 
     {
-        cout << "Seat Range: " << seatsToCheck[0] << " | End: " << seatsToCheck[1] << endl;
         for (int i = seatsToCheck[0]; i <= seatsToCheck[1]; i++) 
         {
             // cout <<  "Checking Seat[" << i << "] | Passenger First Name: " << this -> Passengers[i].firstName << endl;
@@ -91,18 +92,16 @@ class Plane {
             cout << "Would you Like to Switch to Economy? (Y/N)";
             cin >> userInput;
 
-            if ( (userInput == "Y") || (userInput == "y") )
+            if ((userInput == "Y") || (userInput == "y") )
             {
-                if (CheckSeatsAvaliable(EconomyRange))
-                {
-                    Economy();
-                }
-                else
-                {
-                    cout << "Sorry, First Class is full | Would you like to be added to the waitlist?";
+                if (CheckSeatsAvaliable(EconomyRange)) { Economy(); }
+                else 
+                { 
+                    cout << "Sorry, Economy is full" << endl; 
                     JoinWaitlistPrompt("First Class");
-                }
+                }      
             }
+            else { JoinWaitlistPrompt("First Class"); }
         }
         else 
         {
@@ -113,7 +112,6 @@ class Plane {
                     Passengers[i] = Person(false);
                     DisplayBoardingPass("First Class", i);
                     BoardingPass("First Class",i);
-                    //print to file, change in a minute
                     break;
                 }
             }
@@ -131,16 +129,15 @@ class Plane {
 
             if ( (userInput == "Y") || (userInput == "y") )
             {
-                if (CheckSeatsAvaliable(FirstClassRange))
-                {
-                    FirstClass();
-                }
-                else
-                {
-                    cout << "Sorry, Economy is full | Would you like to be added to the waitlist?";
+                if (CheckSeatsAvaliable(FirstClassRange)) { FirstClass(); }
+                else 
+                { 
+                    cout << "Sorry, First Class is full" << endl; 
                     JoinWaitlistPrompt("Economy");
-                }
+                } 
             }
+            else { JoinWaitlistPrompt("Economy"); }
+            
         }
         else 
         {
@@ -151,7 +148,6 @@ class Plane {
                     Passengers[i] = Person(false);
                     DisplayBoardingPass("Economy", i);
                     BoardingPass("Economy",i); 
-                    //print to file, change in a minute
                     break;
                 }
             }
@@ -161,13 +157,24 @@ class Plane {
 	
 	void JoinWaitlistPrompt(string sectionName) 
 	{
-		string userInput;
-		cout << "\nWould the user like to be added to the waitlist?"  << endl;
-        cin >> userInput;
-		if ( (userInput == "Y") || (userInput == "y"))
+		string userInput = "Filler";
+
+        do
         {
-            WaitList(sectionName);
-        }
+            cout << endl << "Would the user like to be added to the waitlist?: ";
+            cin >> userInput;
+            if ( (userInput == "Y") || (userInput == "y"))
+            {
+                WaitList(sectionName);
+            }
+            else if ((userInput == "N") || (userInput == "n"))
+            {
+                //TODO NOTHING, valid and leave this function
+            }
+            else {
+                cout << "Invalid selection" << endl;
+            }
+        } while ( (userInput != "Y") && (userInput != "y") &&  (userInput != "N") && (userInput != "n")  );
 	}
 
     void WaitList(string sectionName) 
@@ -176,7 +183,7 @@ class Plane {
         ofstream wait_list("waitlist.txt", ios::app);
         if (wait_list.is_open())
         {
-            wait_list << waitListPerson.firstName << " " << waitListPerson.lastName << " | " << waitListPerson.month << "/" << waitListPerson.day << "/" << waitListPerson.year << " | " << sectionName;
+            wait_list << endl << waitListPerson.firstName << " " << waitListPerson.lastName << " | " << waitListPerson.month << "/" << waitListPerson.day << "/" << waitListPerson.year << " | " << sectionName;
             wait_list.close();
         }
         else 
@@ -185,8 +192,10 @@ class Plane {
 
     void DisplayBoardingPass(string sectionName, int seatNumber)
     {
-        cout << endl << "--------------------";
-        cout << Passengers[seatNumber].firstName << " " << Passengers[seatNumber].lastName << " | " << sectionName << " | " << seatNumber << endl;
+        cout << endl << "--------------------" << endl;
+        //Should we print the seatNumber according to the array, or add 1 so the seats go 1-10 for it to make mroe sense to non-programmers.
+        cout << Passengers[seatNumber].firstName << " " << Passengers[seatNumber].lastName << " | " << sectionName << " | " << seatNumber + 1 << endl;
+        cout << "--------------------" << endl;
     }
 
     void BoardingPass(string sectionName, int seatNumber)
@@ -194,7 +203,7 @@ class Plane {
         ofstream boarding_pass("boardingpass.txt", ios::app);
         if (boarding_pass.is_open())
         {
-            boarding_pass << Passengers[seatNumber].firstName << " " << Passengers[seatNumber].lastName << " | " << sectionName << " | " << seatNumber << endl;
+            boarding_pass << endl << Passengers[seatNumber].firstName << " " << Passengers[seatNumber].lastName << " | " << sectionName << " | " << seatNumber;
             boarding_pass.close();
         }
         else 
