@@ -16,8 +16,8 @@ class Plane {
     public: 
     Plane() 
     {
-        //Do check for waitlist, attempt to add all customers on the waitlist, before adding new passengers
-        // Also, remove Passengers from waitlist when they are added
+        //Do check for wait-list, attempt to add all customers on the waitlist, before adding new passengers
+        // Also, remove Passengers from wait-list when they are added
         for (int i = 0; i < NUMBEROFSEATS; i++) 
         {
             Passengers[i] = Person();
@@ -50,8 +50,31 @@ class Plane {
                 return true;
             }
         }
-        //If no seats are avaliable, return false
+        //If no seats are available, return false
         return false;
+    }
+
+// Function to view all available seats
+    void ViewAvailableSeats()
+    {
+        // Loop through all the seats
+        for (int i = 0; i < NUMBEROFSEATS; i++)
+        {
+            // If the firstName attribute of the Passenger at the current seat is empty,
+            // it means the seat is available
+            if (Passengers[i].firstName == "")
+            {
+                // Print a message indicating that the seat is available
+                cout << "Seat " << i+1 << " is available." << endl;
+            }
+            else
+            {
+                // If the firstName attribute of the Passenger at the current seat is not empty,
+                // it means the seat is occupied
+                // Print a message indicating that the seat is occupied and by whom
+                cout << "Seat " << i+1 << " is occupied by " << Passengers[i].firstName << " " << Passengers[i].lastName << "." << endl;
+            }
+        }
     }
 
     string AskForSection()
@@ -181,6 +204,26 @@ class Plane {
             }
         } while ( (userInput != "Y") && (userInput != "y") &&  (userInput != "N") && (userInput != "n")  );
 	}
+
+    // View waitlist function
+    void ViewWaitlist()
+    {
+        // Open the waitlist.txt file
+        ifstream wait_list("waitlist.txt");
+        string line;
+        if (wait_list.is_open())
+        {
+            while (getline(wait_list,line))
+            {
+                cout << line << endl;
+            }
+            wait_list.close();
+        }
+        else // If the file cannot be opened, print an error message
+        {
+            cout << "An Error has occurred when attempting to read from waitlist.txt" << endl;
+        }
+    }
 
     void WaitList(string sectionName) 
     {

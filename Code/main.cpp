@@ -8,21 +8,33 @@ int main() {
 
     Plane plane;
     bool wantToContinue = true;
-    string answer;
-
+    string menuSelection;
     while (wantToContinue)
     {
-        plane.BackFillBoardingPass();
-        plane.AddPassenger();
-        cout << "Do you want to continue? (y/n)";
-        cin >> answer;
-
-        if (answer == "y" || answer == "Y") 
-            wantToContinue = true;
-        else if (answer == "n" || answer == "N")
-            wantToContinue = false;
+        cout << "Airplane Reservation System!!" << endl;
+        cout << "1. Add Passenger" << endl;
+        cout << "2. View Wait list" << endl;
+        cout << "3. View Available seats" << endl;
+        cout << "4. Exit" << endl;
+        cin >> menuSelection;
+        switch (stoi(menuSelection))
+        {
+            case 1:
+                plane.AddPassenger();
+                break;
+            case 2:
+                plane.ViewWaitlist();
+                break;
+            case 3:
+                plane.ViewAvailableSeats();
+                break;
+            case 4:
+                wantToContinue = false;
+                break;
+            default:
+                cout << "Invalid Selection, please try again" << endl;
+                break;
+        }
     }
-
     cout << "Thank you for using the program";
-    
 }
