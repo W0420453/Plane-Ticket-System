@@ -12,6 +12,7 @@ int main() {
 
     while (wantToContinue)
     {
+        plane.BackFillBoardingPass();
         plane.AddPassenger();
         cout << "Do you want to continue? (y/n)";
         cin >> answer;

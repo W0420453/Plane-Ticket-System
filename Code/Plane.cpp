@@ -190,11 +190,42 @@ class Plane {
         ofstream wait_list("waitlist.txt", ios::app);
         if (wait_list.is_open())
         {
-            wait_list << endl << waitListPerson.firstName << " " << waitListPerson.lastName << " | " << waitListPerson.month << "/" << waitListPerson.day << "/" << waitListPerson.year << " | " << sectionName;
+            wait_list << waitListPerson.firstName << " " << waitListPerson.lastName << " | " << waitListPerson.month << "/" << waitListPerson.day << "/" << waitListPerson.year << " | " << sectionName << endl;
             wait_list.close();
         }
         else 
-        { cout << "An Error has occured when attempting to print to a file" << endl;}
+        { cout << "An Error has occurred when attempting to print to a file" << endl;}
+    }
+
+    /*
+     * Function to fill up the boardingPass
+     */
+    void BackFillBoardingPass()
+    {
+        ifstream wait_list;
+        wait_list.open("waitlist.txt");
+        string currentLine;
+        bool isFirstClassFull = false;
+        bool isEconomyFull = false;
+
+        if (wait_list.is_open())
+        {
+            // not using !wait_list.eof() because it is a bug, which will read an empty new line as a valid time to continue
+            https://stackoverflow.com/questions/5605125/why-is-iostreameof-inside-a-loop-condition-i-e-while-stream-eof-cons
+            while (getline(wait_list, currentLine) && !(isFirstClassFull && isEconomyFull) )
+            {
+                // Checking if the current First Class,
+                if (currentLine.find("First Class") && !isFirstClassFull)
+                {
+                    //Find seat to assign
+
+                    // If the seat filled was the last seat for the category, set firstClassFull to be false
+                    isFirstClassFull = this->CheckSeatsAvaliable(FirstClassRange);
+                    //check if person
+
+                }
+            }
+        }
     }
 
     void DisplayBoardingPass(string sectionName, int seatNumber)
@@ -215,7 +246,7 @@ class Plane {
         }
         else 
         { 
-            cout << "An Error has occured when attempting to print to boardingpass.txt" << endl;
+            cout << "An Error has occurred when attempting to print to boardingpass.txt" << endl;
         }
     }
 };
