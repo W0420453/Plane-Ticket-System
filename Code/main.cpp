@@ -1,4 +1,5 @@
 #include <iostream>
+#include "Person.cpp"
 #include "Plane.cpp"
 using namespace std;
 
@@ -14,11 +15,13 @@ int main() {
         plane.AddPassenger();
         cout << "Do you want to continue? (y/n)";
         cin >> answer;
-        if (answer == "y")
+
+        if (answer == "y" || answer == "Y") 
             wantToContinue = true;
-        else if (answer == "n")
+        else if (answer == "n" || answer == "N")
             wantToContinue = false;
     }
 
     cout << "Thank you for using the program";
+    
 }

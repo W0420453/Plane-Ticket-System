@@ -1,6 +1,6 @@
 #include <iostream>
 #include <fstream>
-#include "Person.cpp"
+// #include "Person.cpp"
 using namespace std;
 
 class Plane {
@@ -20,7 +20,7 @@ class Plane {
         // Also, remove Passengers from waitlist when they are added
         for (int i = 0; i < NUMBEROFSEATS; i++) 
         {
-            Passengers[i] = new Person(true);
+            Passengers[i] = Person();
         }
     }
 	
@@ -109,7 +109,9 @@ class Plane {
             {
                 if (Passengers[i].firstName == "")
                 {
-                    Passengers[i] = Person(false);
+                    Passengers[i] = Person();
+                    Passengers[i].GetFullName();
+                    Passengers[i].GetBirthday();
                     DisplayBoardingPass("First Class", i);
                     BoardingPass("First Class",i);
                     break;
@@ -126,6 +128,7 @@ class Plane {
         {
             cout << "Would you Like to Switch to First Class? (Y/N)";
             cin >> userInput;
+
 
             if ( (userInput == "Y") || (userInput == "y") )
             {
@@ -145,7 +148,9 @@ class Plane {
             {
                 if (Passengers[i].firstName == "")
                 {
-                    Passengers[i] = Person(false);
+                    Passengers[i] = Person();
+                    Passengers[i].GetFullName();
+                    Passengers[i].GetBirthday();
                     DisplayBoardingPass("Economy", i);
                     BoardingPass("Economy",i); 
                     break;
@@ -179,7 +184,9 @@ class Plane {
 
     void WaitList(string sectionName) 
     {
-        Person waitListPerson = Person(false);
+        Person waitListPerson = Person();
+        waitListPerson.GetFullName();
+        waitListPerson.GetBirthday();
         ofstream wait_list("waitlist.txt", ios::app);
         if (wait_list.is_open())
         {
@@ -203,7 +210,7 @@ class Plane {
         ofstream boarding_pass("boardingpass.txt", ios::app);
         if (boarding_pass.is_open())
         {
-            boarding_pass << endl << Passengers[seatNumber].firstName << " " << Passengers[seatNumber].lastName << " | " << sectionName << " | " << seatNumber;
+            boarding_pass << Passengers[seatNumber].firstName << " " << Passengers[seatNumber].lastName << " | " << sectionName << " | " << seatNumber << endl;
             boarding_pass.close();
         }
         else 
@@ -212,3 +219,5 @@ class Plane {
         }
     }
 };
+
+
