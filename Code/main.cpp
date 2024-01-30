@@ -9,6 +9,11 @@ int main() {
     Plane plane;
     bool wantToContinue = true;
     string menuSelection;
+
+    remove("boardingpass.txt");
+
+    plane.BackFillBoardingPass();
+
     while (wantToContinue)
     {
         cout << "Airplane Reservation System!!" << endl;

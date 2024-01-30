@@ -128,6 +128,7 @@ class Plane {
         }
         else 
         {
+            //Find seat to assign - TURN INTO SEPERATE FUNCTION    
             for (int i = FirstClassRange[0]; i <= FirstClassRange[1]; i++) 
             {
                 if (Passengers[i].firstName == "")
@@ -167,6 +168,7 @@ class Plane {
         }
         else 
         {
+            //Find seat to assign - TURN INTO SEPERATE FUNCTION
             for (int i = EconomyRange[0]; i <= EconomyRange[1]; i++) 
             {
                 if (Passengers[i].firstName == "")
@@ -202,6 +204,7 @@ class Plane {
             else {
                 cout << "Invalid selection" << endl;
             }
+            // This always equals True, untill one of the 4 userInput checks returns False.  Due using &&'s the checks will all fail and then the while loop will end.
         } while ( (userInput != "Y") && (userInput != "y") &&  (userInput != "N") && (userInput != "n")  );
 	}
 
@@ -240,6 +243,29 @@ class Plane {
         { cout << "An Error has occurred when attempting to print to a file" << endl;}
     }
 
+    string spliceString(string& line, char delimiter)
+    {
+        cout << line << endl;
+        size_t delimiterPOS = line.find(delimiter);
+        string stringObtained;
+
+        // delimiterPOS is equal to std::string::npos when std::string::find fails to find the delimiter it is looking for.
+        if (delimiterPOS != std::string::npos)
+        {
+            stringObtained = line.substr(0,delimiterPOS);;
+            std::cout << "Line Obtained:" << stringObtained <<"TEST"<< endl;
+            // Removing the extra space at the start of each section of the line
+            if (delimiter == '|') { line = line.substr(delimiterPOS + 2); }
+            //Removing everything before and including the delimiter from the string
+            else {line = line.substr(delimiterPOS + 1); }
+        }
+        else { stringObtained = line;}
+
+        cout << line << endl;
+        return stringObtained;
+    }
+
+
     /*
      * Function to fill up the boardingPass
      */
@@ -247,27 +273,115 @@ class Plane {
     {
         ifstream wait_list;
         wait_list.open("waitlist.txt");
+        ofstream temp_wait_list;
+        temp_wait_list.open("temp_waitlist.txt");
+        // Full String retrieved from the file, never to be modified. | Kept for deleting the line when it finds the match for it.
         string currentLine;
+        // Copy of currentLine, but has already used data removed from the start of it to make future searches shorter
+        string modifedLine;
+        //Position of Delimiter | NOTE: need to add + 1 when using substr to remove the delimiter itself. | +3 to remove ending space, delimiter, and starting space for each section
+        size_t delimiterPOS;
+
         bool isFirstClassFull = false;
         bool isEconomyFull = false;
 
         if (wait_list.is_open())
         {
+            // While there is a line to search through, and both First Class AND Economy are not full
             // not using !wait_list.eof() because it is a bug, which will read an empty new line as a valid time to continue
-            https://stackoverflow.com/questions/5605125/why-is-iostreameof-inside-a-loop-condition-i-e-while-stream-eof-cons
+            // https://stackoverflow.com/questions/5605125/why-is-iostreameof-inside-a-loop-condition-i-e-while-stream-eof-cons
             while (getline(wait_list, currentLine) && !(isFirstClassFull && isEconomyFull) )
-            {
-                // Checking if the current First Class,
+            {           
+                // std::cout << "Line Retrived From File: " << currentLine << endl;
+                modifedLine = currentLine; 
+
+                // Checking if the currentline contains First Class, and if First Class is full, using a bool instead of checking to avoid unnessicary searching through seats when it is full.
                 if (currentLine.find("First Class") && !isFirstClassFull)
                 {
-                    //Find seat to assign
+                    //Find seat to assign - TURN INTO SEPERATE FUNCTION
+                    for (int i = FirstClassRange[0]; i <= FirstClassRange[1]; i++) 
+                    {
+                        if (Passengers[i].firstName == "")
+                        {
+                            Passengers[i] = Person();
+                            Passengers[i].SetFirstName(spliceString(modifedLine, ' '));
+                            Passengers[i].SetLastName(spliceString(modifedLine, ' '));
 
-                    // If the seat filled was the last seat for the category, set firstClassFull to be false
-                    isFirstClassFull = this->CheckSeatsAvaliable(FirstClassRange);
-                    //check if person
+                            //returning nothing to this string, so the function spliceString can be called to remove the | delimiter but not use the value obtained
+                            string useless = spliceString(modifedLine, '|');
 
+                            cout << modifedLine << endl;
+
+                            int day = stoi(spliceString(modifedLine, '/'));
+                            int month =  stoi(spliceString(modifedLine, '/'));
+                            int year = stoi(spliceString(modifedLine, ' '));
+
+                            Passengers[i].SetBirthDate(month,day,year);
+
+                            //returning nothing to this string, so the function spliceString can be called to remove the | delimiter but not use the value obtained
+                            useless = spliceString(modifedLine, '|');
+
+                            //Since Section Name is used mutiple times, and to future proof this code.  This variable is required
+                            string secitonName = spliceString(modifedLine, '|');
+
+                            DisplayBoardingPass(secitonName, i);
+                            BoardingPass(secitonName,i);
+
+
+                            // Check if the seat assigned is the same as the last seat fot the section
+                            if ( i = FirstClassRange[i])  { isFirstClassFull = true; }
+                            break;
+                        }
+                    }
+                }
+                else if (currentLine.find("Economy") && !isEconomyFull)
+                {
+                    //Find seat to assign - TURN INTO SEPERATE FUNCTION
+                    for (int i = EconomyRange[0]; i <= EconomyRange[1]; i++) 
+                    {
+                        if (Passengers[i].firstName == "")
+                        {
+                            Passengers[i] = Person();
+                            Passengers[i].SetFirstName(spliceString(modifedLine, ' '));
+                            Passengers[i].SetLastName(spliceString(modifedLine, ' '));
+
+                            //returning nothing to this string, so the function spliceString can be called to remove the | delimiter but not use the value obtained
+                            string useless = spliceString(modifedLine, '|');
+
+                            //Needs to be here to ensure that stoi has a valid argument
+                            int day = stoi(spliceString(modifedLine, '/'));
+                            int month =  stoi(spliceString(modifedLine, '/'));
+                            int year = stoi(spliceString(modifedLine, ' '));
+
+                            Passengers[i].SetBirthDate(month,day,year);
+
+                            //returning nothing to this string, so the function spliceString can be called to remove the | delimiter but not use the value obtained
+                            useless = spliceString(modifedLine, '|');
+
+                            //Since Section Name is used mutiple times, and to future proof this code.  This variable is required
+                            string secitonName = spliceString(modifedLine, '|');
+
+                            DisplayBoardingPass(secitonName, i);
+                            BoardingPass(secitonName,i);
+
+                            // Check if the seat assigned is the same as the last seat fot the section
+                            if ( i = EconomyRange[i])  { isEconomyFull = true; }
+                            break;
+                        }
+                    }
+                }
+                // If the plane is full, or the section cannot be found, add them to the temp waitlist
+                else 
+                {
+                    temp_wait_list << currentLine << endl;
                 }
             }
+            wait_list.close();
+            temp_wait_list.close();
+            
+            //Swapping the temp waitlist with the real waitlist
+            remove("waitlist.txt");
+            rename("temp_waitlist.txt", "waitlist.txt");
         }
     }
 
