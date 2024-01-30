@@ -5,23 +5,38 @@ using namespace std;
 
 class Plane {
 
-    private:
-        static const int NUMBEROFSEATS = 10;
-        //Making the assumption that the number of seats are equal between First Class and Economy
-        int FirstClassRange[2] = {0,(NUMBEROFSEATS/2) - 1}; //First half of the plane  (Min, Max)
-        int EconomyRange[2] = {(NUMBEROFSEATS/2),(NUMBEROFSEATS - 1)}; //Back half of the plane (Min, Max)
-        int FullPlaneRange[2] = {0,(NUMBEROFSEATS - 1)}; // Entire Plane (Min, Max)
-        Person Passengers[NUMBEROFSEATS];
+    public:
+//    static const int NUMBEROFSEATS = 10;
+//    //Making the assumption that the number of seats are equal between First Class and Economy
+    int FirstClassRange[2]; //First half of the plane  (Min, Max)
+    int EconomyRange[2]; //Back half of the plane (Min, Max)
+    int FullPlaneRange[2]; // Entire Plane (Min, Max)
+    int numberOfSeats;
 
-    public: 
-    Plane() 
+    // Pointer of Person sized Named Passenger | To be replaced when the array size is determined
+    Person* Passengers;
+
+    Plane(int size) : numberOfSeats(10)
     {
-        //Do check for wait-list, attempt to add all customers on the waitlist, before adding new passengers
-        // Also, remove Passengers from wait-list when they are added
-        for (int i = 0; i < NUMBEROFSEATS; i++) 
+        this -> numberOfSeats = size;
+        // Overwrite the Person Pointer named Passenger with an array of Person's
+        Passengers = new Person[numberOfSeats];
+        for (int i = 0; i < numberOfSeats; i++)
         {
             Passengers[i] = Person();
         }
+
+        //First half of the plane  (Min, Max)
+        this -> FirstClassRange[0] = 0;
+        this -> FirstClassRange[1] = ((numberOfSeats/2) - 1);
+
+        //Back half of the plane (Min, Max)
+        this -> EconomyRange[0] = (numberOfSeats/2);
+        this -> EconomyRange[1] = (numberOfSeats - 1);
+
+        // Entire Plane (Min, Max)
+        this -> FullPlaneRange[0] = 0;
+        this -> FullPlaneRange[1] = (numberOfSeats - 1);
     }
 	
     void AddPassenger()
@@ -36,7 +51,7 @@ class Plane {
         {
             if (sectionName == "First Class") {FirstClass();}
             else if (sectionName == "Economy") {Economy();}
-            else { cout << "\nAn Error has Occured, please try again later" << endl;}
+            else { cout << "\nAn Error has Occurred, please try again later" << endl;}
         }
     }
 
@@ -44,7 +59,6 @@ class Plane {
     {
         for (int i = seatsToCheck[0]; i <= seatsToCheck[1]; i++) 
         {
-            // cout <<  "Checking Seat[" << i << "] | Passenger First Name: " << this -> Passengers[i].firstName << endl;
             if (Passengers[i].firstName.empty())
             {
                 return true;
@@ -58,7 +72,7 @@ class Plane {
     void ViewAvailableSeats()
     {
         // Loop through all the seats
-        for (int i = 0; i < NUMBEROFSEATS; i++)
+        for (int i = 0; i <= FullPlaneRange[1]; i++)
         {
             // If the firstName attribute of the Passenger at the current seat is empty,
             // it means the seat is available
@@ -241,7 +255,7 @@ class Plane {
         { cout << "An Error has occurred when attempting to print to a file" << endl;}
     }
 
-    string spliceString(string& line, char delimiter)
+    string SpliceString(string& line, char delimiter)
     {
         size_t delimiterPOS = line.find(delimiter);
         string stringObtained;
@@ -297,31 +311,8 @@ class Plane {
                     {
                         if (Passengers[i].firstName == "")
                         {
-                            Passengers[i] = Person();
-                            Passengers[i].SetFirstName(spliceString(modifedLine, ' '));
-                            Passengers[i].SetLastName(spliceString(modifedLine, ' '));
 
-                            //returning nothing to this string, so the function spliceString can be called to remove the | delimiter but not use the value obtained
-                            string useless = spliceString(modifedLine, '|');
-
-                            //cout << modifedLine << endl;
-
-                            int day = stoi(spliceString(modifedLine, '/'));
-                            int month =  stoi(spliceString(modifedLine, '/'));
-                            int year = stoi(spliceString(modifedLine, ' '));
-
-                            Passengers[i].SetBirthDate(month,day,year);
-
-                            //returning nothing to this string, so the function spliceString can be called to remove the | delimiter but not use the value obtained
-                            useless = spliceString(modifedLine, '|');
-
-                            //Since Section Name is used multiple times, and to future-proof this code.  This variable is required
-                            string secitonName = spliceString(modifedLine, '|');
-
-                            DisplayBoardingPass(secitonName, i);
-                            BoardingPass(secitonName,i);
-
-
+                            AddWaitlistPassenger(i, modifedLine);
                             // Check if the seat assigned is the same as the last seat fot the section
                             if ( (i = FirstClassRange[1]))  { isFirstClassFull = true; }
                             break;
@@ -335,29 +326,7 @@ class Plane {
                     {
                         if (Passengers[i].firstName == "")
                         {
-                            Passengers[i] = Person();
-                            Passengers[i].SetFirstName(spliceString(modifedLine, ' '));
-                            Passengers[i].SetLastName(spliceString(modifedLine, ' '));
-
-                            //returning nothing to this string, so the function spliceString can be called to remove the | delimiter but not use the value obtained
-                            string useless = spliceString(modifedLine, '|');
-
-                            //Needs to be here to ensure that stoi has a valid argument
-                            int day = stoi(spliceString(modifedLine, '/'));
-                            int month =  stoi(spliceString(modifedLine, '/'));
-                            int year = stoi(spliceString(modifedLine, ' '));
-
-                            Passengers[i].SetBirthDate(month,day,year);
-
-                            //returning nothing to this string, so the function spliceString can be called to remove the | delimiter but not use the value obtained
-                            useless = spliceString(modifedLine, '|');
-
-                            //Since Section Name is used mutiple times, and to future proof this code.  This variable is required
-                            string secitonName = spliceString(modifedLine, '|');
-
-                            DisplayBoardingPass(secitonName, i);
-                            BoardingPass(secitonName,i);
-
+                            AddWaitlistPassenger(i, modifedLine);
                             // Check if the seat assigned is the same as the last seat fot the section
                             if ( (i = EconomyRange[1]))  { isEconomyFull = true; }
                             break;
@@ -377,6 +346,31 @@ class Plane {
             remove("waitlist.txt");
             rename("temp_waitlist.txt", "waitlist.txt");
         }
+    }
+
+    void AddWaitlistPassenger(int i, string& modifedLine)
+    {
+        Passengers[i] = Person();
+        Passengers[i].SetFirstName(SpliceString(modifedLine, ' '));
+        Passengers[i].SetLastName(SpliceString(modifedLine, ' '));
+
+        //returning nothing to this string, so the function SpliceString can be called to remove the | delimiter but not use the value obtained
+        string useless = SpliceString(modifedLine, '|');
+
+        int day = stoi(SpliceString(modifedLine, '/'));
+        int month =  stoi(SpliceString(modifedLine, '/'));
+        int year = stoi(SpliceString(modifedLine, ' '));
+
+        Passengers[i].SetBirthDate(month,day,year);
+
+        //returning nothing to this string, so the function SpliceString can be called to remove the | delimiter but not use the value obtained
+        useless = SpliceString(modifedLine, '|');
+
+        //Since Section Name is used multiple times, and to future-proof this code.  This variable is required
+        string secitonName = SpliceString(modifedLine, '|');
+
+        DisplayBoardingPass(secitonName, i);
+        BoardingPass(secitonName,i);
     }
 
     void DisplayBoardingPass(string sectionName, int seatNumber)

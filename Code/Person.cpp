@@ -14,6 +14,15 @@ public:
     //Constructor used to create a person with default settings
     Person(){};
 
+    // Just a testing constructor, not be used
+//    Person(bool isDefault) {
+//        this -> firstName = "Default";
+//        this -> lastName = "Name";
+//        this -> day = 1;
+//        this -> month = 1;
+//        this -> year = 1900;
+//    }
+
     void GetFullName()
     {
         cout << "Enter your first name: ";
@@ -78,6 +87,10 @@ public:
             cin >> valMonth;
 
         } while (valMonth.empty() || !ValidateInput(valMonth) || stoi(valMonth) < 1 || stoi(valMonth) > 12);
+
+        //Need to assign the valMonth to the Person Object
+        this -> month = stoi(valMonth);
+
         do
         {
             //     val for day ofr number
@@ -86,6 +99,10 @@ public:
             // needs input validation
             cin >> valDay;
         } while (valDay.empty() || !ValidateInput(valDay) || stoi(valDay) < 1 || stoi(valDay) > daysInMonth[stoi(valMonth) - 1]);
+
+        //Need to assign the valDay to the Person Object
+        this -> day = stoi(valDay);
+
         do
         {
             // val for year as number
@@ -94,6 +111,9 @@ public:
             // needs input validation
             cin >> valYear;
         } while (valYear.empty() || !ValidateInput(valYear) || stoi(valYear) < 1);
+
+        //Need to assign the valDay to the Person Object
+        this -> year = stoi(valYear);
     }
 
 
