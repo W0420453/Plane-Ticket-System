@@ -27,7 +27,7 @@ class Plane {
     void AddPassenger()
     {
         string sectionName = AskForSection();
-        if (CheckSeatsAvaliable(FullPlaneRange) != true)
+        if (!CheckSeatsAvaliable(FullPlaneRange))
         {
             cout << "Sorry, the Plane is Full" << endl;
             JoinWaitlistPrompt(sectionName);
@@ -45,7 +45,7 @@ class Plane {
         for (int i = seatsToCheck[0]; i <= seatsToCheck[1]; i++) 
         {
             // cout <<  "Checking Seat[" << i << "] | Passenger First Name: " << this -> Passengers[i].firstName << endl;
-            if (Passengers[i].firstName == "")
+            if (Passengers[i].firstName.empty())
             {
                 return true;
             }
@@ -62,7 +62,7 @@ class Plane {
         {
             // If the firstName attribute of the Passenger at the current seat is empty,
             // it means the seat is available
-            if (Passengers[i].firstName == "")
+            if (Passengers[i].firstName.empty())
             {
                 // Print a message indicating that the seat is available
                 cout << "Seat " << i+1 << " is available." << endl;
@@ -85,7 +85,6 @@ class Plane {
         while (sectionString == "NotSet")
         {
             cout << "Please type 1 for First Class or 2 for Economy: ";
-            //TODO Input Validation
             cin >> sectionSelection;
 
             if (sectionSelection == "1")
@@ -128,10 +127,9 @@ class Plane {
         }
         else 
         {
-            //Find seat to assign - TURN INTO SEPERATE FUNCTION    
             for (int i = FirstClassRange[0]; i <= FirstClassRange[1]; i++) 
             {
-                if (Passengers[i].firstName == "")
+                if (Passengers[i].firstName.empty())
                 {
                     Passengers[i] = Person();
                     Passengers[i].GetFullName();
@@ -171,7 +169,7 @@ class Plane {
             //Find seat to assign - TURN INTO SEPERATE FUNCTION
             for (int i = EconomyRange[0]; i <= EconomyRange[1]; i++) 
             {
-                if (Passengers[i].firstName == "")
+                if (Passengers[i].firstName.empty())
                 {
                     Passengers[i] = Person();
                     Passengers[i].GetFullName();
@@ -204,7 +202,7 @@ class Plane {
             else {
                 cout << "Invalid selection" << endl;
             }
-            // This always equals True, untill one of the 4 userInput checks returns False.  Due using &&'s the checks will all fail and then the while loop will end.
+            // This always equals True, until one of the 4 userInput checks returns False.  Due using &&'s the checks will all fail and then the while loop will end.
         } while ( (userInput != "Y") && (userInput != "y") &&  (userInput != "N") && (userInput != "n")  );
 	}
 
@@ -245,7 +243,6 @@ class Plane {
 
     string spliceString(string& line, char delimiter)
     {
-        cout << line << endl;
         size_t delimiterPOS = line.find(delimiter);
         string stringObtained;
 
@@ -253,7 +250,7 @@ class Plane {
         if (delimiterPOS != std::string::npos)
         {
             stringObtained = line.substr(0,delimiterPOS);;
-            std::cout << "Line Obtained:" << stringObtained <<"TEST"<< endl;
+
             // Removing the extra space at the start of each section of the line
             if (delimiter == '|') { line = line.substr(delimiterPOS + 2); }
             //Removing everything before and including the delimiter from the string
@@ -261,7 +258,6 @@ class Plane {
         }
         else { stringObtained = line;}
 
-        cout << line << endl;
         return stringObtained;
     }
 
@@ -291,14 +287,12 @@ class Plane {
             // not using !wait_list.eof() because it is a bug, which will read an empty new line as a valid time to continue
             // https://stackoverflow.com/questions/5605125/why-is-iostreameof-inside-a-loop-condition-i-e-while-stream-eof-cons
             while (getline(wait_list, currentLine) && !(isFirstClassFull && isEconomyFull) )
-            {           
-                // std::cout << "Line Retrived From File: " << currentLine << endl;
+            {
                 modifedLine = currentLine; 
 
-                // Checking if the currentline contains First Class, and if First Class is full, using a bool instead of checking to avoid unnessicary searching through seats when it is full.
+                // Checking if the current line contains First Class, and if First Class is full, using a bool instead of checking to avoid unnecessary searching through seats when it is full.
                 if (currentLine.find("First Class") && !isFirstClassFull)
                 {
-                    //Find seat to assign - TURN INTO SEPERATE FUNCTION
                     for (int i = FirstClassRange[0]; i <= FirstClassRange[1]; i++) 
                     {
                         if (Passengers[i].firstName == "")
@@ -310,7 +304,7 @@ class Plane {
                             //returning nothing to this string, so the function spliceString can be called to remove the | delimiter but not use the value obtained
                             string useless = spliceString(modifedLine, '|');
 
-                            cout << modifedLine << endl;
+                            //cout << modifedLine << endl;
 
                             int day = stoi(spliceString(modifedLine, '/'));
                             int month =  stoi(spliceString(modifedLine, '/'));
@@ -321,7 +315,7 @@ class Plane {
                             //returning nothing to this string, so the function spliceString can be called to remove the | delimiter but not use the value obtained
                             useless = spliceString(modifedLine, '|');
 
-                            //Since Section Name is used mutiple times, and to future proof this code.  This variable is required
+                            //Since Section Name is used multiple times, and to future-proof this code.  This variable is required
                             string secitonName = spliceString(modifedLine, '|');
 
                             DisplayBoardingPass(secitonName, i);
@@ -329,7 +323,7 @@ class Plane {
 
 
                             // Check if the seat assigned is the same as the last seat fot the section
-                            if ( i = FirstClassRange[i])  { isFirstClassFull = true; }
+                            if ( (i = FirstClassRange[1]))  { isFirstClassFull = true; }
                             break;
                         }
                     }
@@ -365,12 +359,12 @@ class Plane {
                             BoardingPass(secitonName,i);
 
                             // Check if the seat assigned is the same as the last seat fot the section
-                            if ( i = EconomyRange[i])  { isEconomyFull = true; }
+                            if ( (i = EconomyRange[1]))  { isEconomyFull = true; }
                             break;
                         }
                     }
                 }
-                // If the plane is full, or the section cannot be found, add them to the temp waitlist
+                // If the plane is full, or the section cannot be found, add them to the temp wait list
                 else 
                 {
                     temp_wait_list << currentLine << endl;
@@ -388,7 +382,7 @@ class Plane {
     void DisplayBoardingPass(string sectionName, int seatNumber)
     {
         cout << endl << "--------------------" << endl;
-        //Should we print the seatNumber according to the array, or add 1 so the seats go 1-10 for it to make mroe sense to non-programmers.
+        //Should we print the seatNumber according to the array, or add 1 so the seats go 1-10 for it to make more sense to non-programmers.
         cout << Passengers[seatNumber].firstName << " " << Passengers[seatNumber].lastName << " | " << sectionName << " | " << seatNumber + 1 << endl;
         cout << "--------------------" << endl;
     }

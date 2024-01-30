@@ -1,7 +1,7 @@
 #include <iostream>
 using namespace std;
 
-// TODO: Logger Functionallity for all the Set functions to see where the validation broke.
+// TODO: Logger Functionality for all the Set functions to see where the validation broke.
 class Person
 {
 public:
@@ -13,14 +13,6 @@ public:
 
     //Constructor used to create a person with default settings
     Person(){};
-
-    //Constructor used by BackFillBoardingPass
-    Person(string fName, string lName, int d, int m, int y) 
-    {
-        SetFirstName(fName);
-        SetLastName(lName);
-        SetBirthDate(m,d,y);
-    }
 
     void GetFullName()
     {
@@ -106,17 +98,20 @@ public:
 
 
     // SetFirstName used during BackfillBoardingPass
-    void SetFirstName(string fName) {
+    void SetFirstName(string fName)
+    {
         this -> firstName = fName;
     }
 
     // SetLastName used during BackfillBoardingPass
-    void SetLastName(string lName) {
+    void SetLastName(string lName)
+    {
         this -> lastName = lName;
     }
 
     // SetBirthDate used during BackfillBoardingPass
-    void SetBirthDate(int month, int day, int year) {
+    void SetBirthDate(int month, int day, int year)
+    {
         // 1d array with the days in each month
         int daysInMonth[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
