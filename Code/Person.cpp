@@ -5,23 +5,29 @@ using namespace std;
 class Person
 {
 public:
-    string firstName = "";
-    string lastName = "";
-    int day = 0;
-    int month = 0;
-    int year = 0;
+    string firstName;
+    string lastName;
+    int day;
+    int month;
+    int year;
 
     //Constructor used to create a person with default settings
-    Person(){};
+    Person(){
+        firstName = "";
+        lastName = "";
+        day = 0;
+        month = 0;
+        year = 0;
+    };
 
     // Just a testing constructor, not be used
-//    Person(bool isDefault) {
-//        this -> firstName = "Default";
-//        this -> lastName = "Name";
-//        this -> day = 1;
-//        this -> month = 1;
-//        this -> year = 1900;
-//    }
+    Person(bool isDefault) {
+        this -> firstName = "Default";
+        this -> lastName = "Name";
+        this -> day = 1;
+        this -> month = 1;
+        this -> year = 1900;
+    };
 
     void GetFullName()
     {
@@ -75,7 +81,6 @@ public:
         string valMonth;
         string valDay;
         string valYear;
-        int flag = 0;
         // 1d array with the days in each month
         int daysInMonth[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
@@ -130,33 +135,33 @@ public:
     }
 
     // SetBirthDate used during BackfillBoardingPass
-    void SetBirthDate(int month, int day, int year)
+    void SetBirthDate(int m, int d, int y)
     {
         // 1d array with the days in each month
         int daysInMonth[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
         // Ensuring that all values were passed into the method, this will fail if any value passed in is less then or equal to 0.
-        if (month < 1 || day < 1 || year < 1 )
+        if (m < 1 || d < 1 || y < 1 )
         {
-            cout << "Error: Invalid Day Month or Year" << endl;
+            cout << "Error: Invalid Day Month or y" << endl;
         }
-        // All inputs are greater then 0, however they have not been validated yet
+        // All inputs are greater than 0, however they have not been validated yet
         else
         {
             // Validating if the Month entered is valid
-            if ( (month >= 1) && (month <= 12) )
+            if ( (m >= 1) && (m <= 12) )
             {
                 //MONTH IS VALID, HOWEVER it will be not assigned until both day and year are validated
                 // Validating if day entered is a valid date for the month
-                if ((day >= 1)  &&  (day <= daysInMonth[month - 1]))
+                if ((d >= 1)  &&  (d <= daysInMonth[m - 1]))
                 {
                     //DAY IS VALID, Still need to validate Year
-                    if ( (year >= 1))
+                    if ( (y >= 1))
                     {
                         //MONTH, DAY, YEAR are all validated.  So assign the values given to the Instance of the Person Object
-                        this -> month = month;
-                        this -> day = day;
-                        this -> year = year;
+                        this -> month = m;
+                        this -> day = d;
+                        this -> year = y;
                     }
                 }
             }

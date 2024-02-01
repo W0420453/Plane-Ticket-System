@@ -7,6 +7,7 @@ using namespace std;
 int main() {
 
     Plane plane(10);
+
     bool wantToContinue = true;
     string menuSelection;
 
