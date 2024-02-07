@@ -6,12 +6,18 @@ using namespace std;
 
 int main() {
 
-    Plane plane;
+    Plane plane(10);
+
     bool wantToContinue = true;
     string menuSelection;
+
+    remove("boardingpass.txt");
+
+    plane.BackFillBoardingPass();
+
     while (wantToContinue)
     {
-        cout << "Airplane Reservation System!!" << endl;
+        cout << endl << "Airplane Reservation System!!" << endl;
         cout << "1. Add Passenger" << endl;
         cout << "2. View Wait list" << endl;
         cout << "3. View Available seats" << endl;

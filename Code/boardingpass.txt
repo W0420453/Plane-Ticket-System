@@ -1,3 +1,0 @@
-bob tim | First Class | 0
-billy bob | First Class | 0
-bill tom | First Class | 0

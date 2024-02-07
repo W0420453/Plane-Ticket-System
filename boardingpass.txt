@@ -1,7 +1,1 @@
-
-bob booby | First Class | 0
-bob bobby | First Class | 0
-bub buuds | First Class | 1john winsor | First Class | 0
-john winsor | First Class | 0
-bob bobby | First Class | 1
-jeff fred | Economy | 5
+Nathan Labbe | Economy | 0
