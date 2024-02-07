@@ -19,10 +19,10 @@ class Plane {
     {
         this -> numberOfSeats = size;
         // Overwrite the Passenger Pointer named Passenger with an array of Passenger's
-        Passengers = new Passenger[numberOfSeats];
+        this -> Passengers = new Passenger[numberOfSeats];
         for (int i = 0; i < numberOfSeats; i++)
         {
-            Passengers[i] = Passenger();
+            Passengers[i] = Passenger(i);
         }
 
         //First half of the plane  (Min, Max)
@@ -60,7 +60,7 @@ class Plane {
     {
         for (int i = seatsToCheck[0]; i <= seatsToCheck[1]; i++) 
         {
-            if (Passengers[i].firstName.empty())
+            if (Passengers[i].GetFirstName().empty())
             {
                 return true;
             }
@@ -74,7 +74,7 @@ class Plane {
     {
         for (int i = seatsToCheck[0]; i <= seatsToCheck[1]; i++)
         {
-            if (Passengers[i].firstName.empty())
+            if (Passengers[i].GetFirstName().empty())
             {
                 return i; //Returning the equivalent seat number POS in the passengers
             }
@@ -91,7 +91,7 @@ class Plane {
         {
             // If the firstName attribute of the Passenger at the current seat is empty,
             // it means the seat is available
-            if (Passengers[i].firstName.empty())
+            if (Passengers[i].GetFirstName().empty())
             {
                 // Print a message indicating that the seat is available
                 cout << "Seat " << i+1 << " is available." << endl;
@@ -101,7 +101,7 @@ class Plane {
                 // If the firstName attribute of the Passenger at the current seat is not empty,
                 // it means the seat is occupied
                 // Print a message indicating that the seat is occupied and by whom
-                cout << "Seat " << i+1 << " is occupied by " << Passengers[i].firstName << " " << Passengers[i].lastName << "." << endl;
+                cout << "Seat " << i+1 << " is occupied by " << Passengers[i].GetFirstName() << " " << Passengers[i].GetLastName() << "." << endl;
             }
         }
     }
@@ -144,7 +144,7 @@ class Plane {
             cout << "Would you Like to Switch to Economy? (Y/N)";
             cin >> userInput;
 
-            if ((userInput == "Y") || (userInput == "y") )
+            if ((userInput[0] == 'Y') || (userInput[0] == 'y') )
             {
                 if (CheckSeatsAvailable(EconomyRange)) { Economy(); }
                 else 
@@ -161,19 +161,22 @@ class Plane {
             if (seatNumber != -1)
             {
                     Passengers[seatNumber] = Passenger();
-                    Passengers[seatNumber].GetFullName();
-                    Passengers[seatNumber].GetBirthday();
+                    Passengers[seatNumber].AskFullName();
+                    Passengers[seatNumber].AskBirthday();
+                    Passengers[seatNumber].SetSeatNumber(seatNumber);
+                    Passengers[seatNumber].SetSectionName("First Class");
+
                     DisplayBoardingPass("First Class", seatNumber);
                     BoardingPass("First Class",seatNumber);
             }
             // Old method before int DetermineSeatAvailable(RangeOfSeats) was created
 //            for (int i = FirstClassRange[0]; i <= FirstClassRange[1]; i++)
 //            {
-//                if (Passengers[i].firstName.empty())
+//                if (Passengers[i].GetFirstName().empty())
 //                {
 //                    Passengers[i] = Passenger();
-//                    Passengers[i].GetFullName();
-//                    Passengers[i].GetBirthday();
+//                    Passengers[i].AskFullName();
+//                    Passengers[i].AskBirthday();
 //                    DisplayBoardingPass("First Class", i);
 //                    BoardingPass("First Class",i);
 //                    break;
@@ -192,7 +195,7 @@ class Plane {
             cin >> userInput;
 
 
-            if ( (userInput == "Y") || (userInput == "y") )
+            if ( (userInput[0] == 'Y') || (userInput[0] == 'y') )
             {
                 if (CheckSeatsAvailable(FirstClassRange)) { FirstClass(); }
                 else 
@@ -210,8 +213,11 @@ class Plane {
             if (seatNumber != -1)
             {
                 Passengers[seatNumber] = Passenger();
-                Passengers[seatNumber].GetFullName();
-                Passengers[seatNumber].GetBirthday();
+                Passengers[seatNumber].AskFullName();
+                Passengers[seatNumber].AskBirthday();
+                Passengers[seatNumber].SetSeatNumber(seatNumber);
+                Passengers[seatNumber].SetSectionName("Economy");
+
                 DisplayBoardingPass("Economy", seatNumber);
                 BoardingPass("Economy", seatNumber);
             }
@@ -220,11 +226,11 @@ class Plane {
 //            //Find seat to assign - TURN INTO SEPARATE FUNCTION
 //            for (int i = EconomyRange[0]; i <= EconomyRange[1]; i++)
 //            {
-//                if (Passengers[i].firstName.empty())
+//                if (Passengers[i].GetFirstName.empty())
 //                {
 //                    Passengers[i] = Passenger();
-//                    Passengers[i].GetFullName();
-//                    Passengers[i].GetBirthday();
+//                    Passengers[i].AskFullName();
+//                    Passengers[i].AskBirthday();
 //                    DisplayBoardingPass("Economy", i);
 //                    BoardingPass("Economy",i);
 //                    break;
@@ -240,11 +246,11 @@ class Plane {
         {
             cout << endl << "Would the user like to be added to the waitlist?: ";
             cin >> userInput;
-            if ( (userInput == "Y") || (userInput == "y"))
+            if ( (userInput[0] == 'Y') || (userInput[0] == 'y'))
             {
                 WaitList(sectionName);
             }
-            else if ((userInput == "N") || (userInput == "n"))
+            else if ((userInput[0] == 'N') || (userInput[0] == 'n'))
             {
                 //TODO NOTHING, valid and leave this function
             }
@@ -252,7 +258,7 @@ class Plane {
                 cout << "Invalid selection" << endl;
             }
             // This always equals True, until one of the 4 userInput checks returns False.  Due using &&'s the checks will all fail and then the while loop will end.
-        } while ( (userInput != "Y") && (userInput != "y") &&  (userInput != "N") && (userInput != "n")  );
+        } while ( (userInput[0] != 'Y') && (userInput[0] != 'y') &&  (userInput[0] != 'N') && (userInput[0] != 'n')  );
 	}
 
     // View waitlist function
@@ -278,12 +284,15 @@ class Plane {
     void WaitList(const string& sectionName)
     {
         Passenger waitListPassenger = Passenger();
-        waitListPassenger.GetFullName();
-        waitListPassenger.GetBirthday();
+        waitListPassenger.AskFullName();
+        waitListPassenger.AskBirthday();
+        waitListPassenger.SetSectionName(sectionName);
         ofstream wait_list("waitlist.txt", ios::app);
         if (wait_list.is_open())
         {
-            wait_list << waitListPassenger.firstName << " " << waitListPassenger.lastName << " | " << waitListPassenger.month << "/" << waitListPassenger.day << "/" << waitListPassenger.year << " | " << sectionName << endl;
+            wait_list << waitListPassenger.GetFirstName() << " " << waitListPassenger.GetLastName() << " | "
+            << waitListPassenger.GetBirthDate() << " | "
+            << waitListPassenger.GetSectionName() << endl;
             wait_list.close();
         }
         else 
@@ -409,6 +418,8 @@ class Plane {
         string useless;
 
         Passengers[i] = Passenger();
+        Passengers[i].SetSeatNumber(i);
+
         Passengers[i].SetFirstName(SpliceString(modifiedLine, ' '));
         Passengers[i].SetLastName(SpliceString(modifiedLine, ' '));
 
@@ -427,7 +438,10 @@ class Plane {
 
         sectionName = SpliceString(modifiedLine, '|');
 
-        DisplayBoardingPass(sectionName, i);
+        Passengers[i].SetSectionName(modifiedLine);
+
+        // Proof Boarding Pass Still Works
+        // DisplayBoardingPass(sectionName, i);
         BoardingPass(sectionName,i);
     }
 
@@ -435,7 +449,7 @@ class Plane {
     {
         cout << endl << "--------------------" << endl;
         //Should we print the seatNumber according to the array, or add 1 so the seats go 1-10 for it to make more sense to non-programmers.
-        cout << Passengers[seatNumber].firstName << " " << Passengers[seatNumber].lastName << " | " << sectionName << " | " << seatNumber + 1 << endl;
+        cout << Passengers[seatNumber].GetFirstName() << " " << Passengers[seatNumber].GetLastName() << " | " << sectionName << " | " << seatNumber + 1 << endl;
         cout << "--------------------" << endl;
     }
 
@@ -444,7 +458,7 @@ class Plane {
         ofstream boarding_pass("boardingpass.txt", ios::app);
         if (boarding_pass.is_open())
         {
-            boarding_pass << Passengers[seatNumber].firstName << " " << Passengers[seatNumber].lastName << " | " << sectionName << " | " << seatNumber << endl;
+            boarding_pass << Passengers[seatNumber].GetFirstName() << " " << Passengers[seatNumber].GetLastName() << " | " << sectionName << " | " << seatNumber << endl;
             boarding_pass.close();
         }
         else 
