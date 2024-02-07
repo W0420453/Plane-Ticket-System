@@ -1,6 +1,6 @@
 #include <iostream>
 #include <fstream>
-// #include "Person.cpp"
+#include "Passenger.cpp"
 using namespace std;
 
 class Plane {
@@ -12,17 +12,17 @@ class Plane {
     int FullPlaneRange[2]; // Entire Plane (Min, Max)
     int numberOfSeats;
 
-    // Pointer of Person sized Named Passenger | To be replaced when the array size is determined
-    Person* Passengers;
+    // Pointer of Passenger sized Named Passenger | To be replaced when the array size is determined
+    Passenger* Passengers;
 
     Plane(int size) : numberOfSeats(10)
     {
         this -> numberOfSeats = size;
-        // Overwrite the Person Pointer named Passenger with an array of Person's
-        Passengers = new Person[numberOfSeats];
+        // Overwrite the Passenger Pointer named Passenger with an array of Passenger's
+        Passengers = new Passenger[numberOfSeats];
         for (int i = 0; i < numberOfSeats; i++)
         {
-            Passengers[i] = Person();
+            Passengers[i] = Passenger();
         }
 
         //First half of the plane  (Min, Max)
@@ -160,7 +160,7 @@ class Plane {
             int seatNumber = DetermineSeatAvailable(FirstClassRange);
             if (seatNumber != -1)
             {
-                    Passengers[seatNumber] = Person();
+                    Passengers[seatNumber] = Passenger();
                     Passengers[seatNumber].GetFullName();
                     Passengers[seatNumber].GetBirthday();
                     DisplayBoardingPass("First Class", seatNumber);
@@ -171,7 +171,7 @@ class Plane {
 //            {
 //                if (Passengers[i].firstName.empty())
 //                {
-//                    Passengers[i] = Person();
+//                    Passengers[i] = Passenger();
 //                    Passengers[i].GetFullName();
 //                    Passengers[i].GetBirthday();
 //                    DisplayBoardingPass("First Class", i);
@@ -209,7 +209,7 @@ class Plane {
             int seatNumber = DetermineSeatAvailable(EconomyRange);
             if (seatNumber != -1)
             {
-                Passengers[seatNumber] = Person();
+                Passengers[seatNumber] = Passenger();
                 Passengers[seatNumber].GetFullName();
                 Passengers[seatNumber].GetBirthday();
                 DisplayBoardingPass("Economy", seatNumber);
@@ -222,7 +222,7 @@ class Plane {
 //            {
 //                if (Passengers[i].firstName.empty())
 //                {
-//                    Passengers[i] = Person();
+//                    Passengers[i] = Passenger();
 //                    Passengers[i].GetFullName();
 //                    Passengers[i].GetBirthday();
 //                    DisplayBoardingPass("Economy", i);
@@ -277,13 +277,13 @@ class Plane {
 
     void WaitList(const string& sectionName)
     {
-        Person waitListPerson = Person();
-        waitListPerson.GetFullName();
-        waitListPerson.GetBirthday();
+        Passenger waitListPassenger = Passenger();
+        waitListPassenger.GetFullName();
+        waitListPassenger.GetBirthday();
         ofstream wait_list("waitlist.txt", ios::app);
         if (wait_list.is_open())
         {
-            wait_list << waitListPerson.firstName << " " << waitListPerson.lastName << " | " << waitListPerson.month << "/" << waitListPerson.day << "/" << waitListPerson.year << " | " << sectionName << endl;
+            wait_list << waitListPassenger.firstName << " " << waitListPassenger.lastName << " | " << waitListPassenger.month << "/" << waitListPassenger.day << "/" << waitListPassenger.year << " | " << sectionName << endl;
             wait_list.close();
         }
         else 
@@ -408,7 +408,7 @@ class Plane {
         // Completely Useless string, just used to store the return value from SpliceString when removing '|'.
         string useless;
 
-        Passengers[i] = Person();
+        Passengers[i] = Passenger();
         Passengers[i].SetFirstName(SpliceString(modifiedLine, ' '));
         Passengers[i].SetLastName(SpliceString(modifiedLine, ' '));
 

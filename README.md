@@ -28,6 +28,8 @@ This information should also be written to the BoardingPass.txt file.
 
 
 Your program should, of course, never assign a seat that has already been assigned.
+
+Nathan, Justin & John
 When the First Class section is full, your program should ask the person if it's acceptable to be placed in the Economy Section (and vice versa).
 If yes, then make the appropriate seat assignment.
 If no, then ask if the person wants to be put on the waiting list for the next flight, if yes add the person to the waitlist.txt file (full name, birthdate, and seating type) and print the message "Next flight leaves in 3 hours."

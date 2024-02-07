@@ -1,6 +1,7 @@
 #include <iostream>
-#include "Person.cpp"
+// #include "Person.cpp"
 #include "Plane.cpp"
+// #include "Passenger.cpp"
 using namespace std;
 
 
