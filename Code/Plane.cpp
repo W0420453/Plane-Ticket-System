@@ -431,7 +431,13 @@ class Plane {
         BoardingPass(sectionName,i);
     }
 
-    void DisplayBoardingPass(const string& sectionName, int seatNumber);
+    void DisplayBoardingPass(const string& sectionName, int seatNumber)
+    {
+        cout << endl << "--------------------" << endl;
+        //Should we print the seatNumber according to the array, or add 1 so the seats go 1-10 for it to make more sense to non-programmers.
+        cout << Passengers[seatNumber].firstName << " " << Passengers[seatNumber].lastName << " | " << sectionName << " | " << seatNumber + 1 << endl;
+        cout << "--------------------" << endl;
+    }
 
     void BoardingPass(const string& sectionName, int seatNumber)
     {
@@ -447,10 +453,3 @@ class Plane {
         }
     }
 };
-
-void Plane::DisplayBoardingPass(const string& sectionName, int seatNumber) {
-    cout << endl << "--------------------" << endl;
-    //Should we print the seatNumber according to the array, or add 1 so the seats go 1-10 for it to make more sense to non-programmers.
-    cout << Passengers[seatNumber].firstName << " " << Passengers[seatNumber].lastName << " | " << sectionName << " | " << seatNumber + 1 << endl;
-    cout << "--------------------" << endl;
-}
