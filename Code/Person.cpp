@@ -62,15 +62,15 @@ public:
                     break;
                 }
             }
-
-            if (flag == 1)
-            {
-                cout << "Not numeric" << endl;
-            }
-            else
-            {
-                cout << "Yay, Numeric" << endl;
-            }
+//            // Test Code
+//            if (flag == 1)
+//            {
+//                cout << "Not numeric" << endl;
+//            }
+//            else
+//            {
+//                cout << "Yay, Numeric" << endl;
+//            }
         }
 
         return flag == 0; // Return true if input is numeric, false otherwise
