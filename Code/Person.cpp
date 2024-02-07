@@ -29,7 +29,7 @@ public:
         this -> year = 1900;
     };
 
-    void GetFullName()
+    void AskFullName()
     {
         cout << "Enter your first name: ";
         // needs input validation
@@ -76,7 +76,7 @@ public:
         return flag == 0; // Return true if input is numeric, false otherwise
     }
 
-    void GetBirthday()
+    void AskBirthday()
     {
         string valMonth;
         string valDay;
@@ -119,6 +119,20 @@ public:
 
         //Need to assign the valDay to the Person Object
         this -> year = stoi(valYear);
+    }
+
+    string GetFirstName()
+    {
+        return this -> firstName;
+    }
+
+    string GetLastName()
+    {
+        return this -> lastName;
+    }
+
+    string GetBirthDate() {
+        return (to_string(this->month) + "/" + to_string(this->day) + "/" + to_string(this-> year));
     }
 
 
