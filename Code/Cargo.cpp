@@ -56,10 +56,9 @@ public:
     }
 
     void AskForLuggage(int seatNumber) {
-        string userInput;
-        string LuggageWeight;
-        string LuggageDescription;
-        string something;
+        string userInput, LuggageWeight, LuggageDescription, something;
+        //Used to Confirm when the user is happy with the luggage they have added.
+        bool isLuggageConfirmed = false;
 
         do {
             cout << "Would you like to add Luggage? (Y/N): ";
@@ -67,33 +66,46 @@ public:
 
             if ((userInput[0] == 'Y') || (userInput[0] == 'y')) {
 
-                // This needs to loop untill the luggage is valid, or the user no longer wants luggage
-                cout << "How much does your luggage weigh?";
+                cout << "How much does your luggage weigh? ";
                 cin >> LuggageWeight;
+                //Checking if weight does not include a decimal, add .0 to the end of the entered decimal if so.
+                if(LuggageWeight.find('.') == string::npos) { LuggageWeight += ".0";}
+
                 if (stof(LuggageWeight) > 0.0 && stof(LuggageWeight) < LuggageMaxWeight) {
                     cout << "Enter description: ";
-                    cin >> LuggageDescription;
 
+                    //cin.ignore() prevents the getline from effecting the "Are you ok with this prompt"
+                    cin.ignore();
+                    getline(cin, LuggageDescription);
+
+                    cout << "=========================" << endl;
                     cout << "Description..: " << LuggageDescription << endl;
                     cout << "Weight..: " << LuggageWeight << endl;
-                    cout << "Are you ok with this (Y/N): " << endl;
+
+                    cout << "Are you ok with this (Y/N): ";
                     cin >> something;
 
                     if ((something[0] == 'Y') || (something[0] == 'y')) {
                         LuggageArray[seatNumber].SetWeight(stof(LuggageWeight));
                         LuggageArray[seatNumber].SetDescription(LuggageDescription);
+
+                        //Allow the user to leave the loop because userInput[0 ]== 'Y' (or 'y') and isLuggageConfirmed = true
+                        isLuggageConfirmed = true;
                     }
                 } else {
                     cout << "Invalid weight" << endl;
                 }
-
 
             } else if ((userInput[0] == 'N') || (userInput[0] == 'n')) {
                 // Nothing
             } else {
                 cout << "Invalid" << endl;
             }
-        } while ((userInput[0] != 'Y') && (userInput[0] != 'y') && (userInput[0] != 'N') && (userInput[0] != 'n'));
+
+            // The following while loop will be true until the user does one of the following during a loop
+            // Enters Y or y as the first character when first prompted, or isLuggageConfirmed is True    | makes first half false, so it becomes false
+            // OR if N or n as the first character when first prompted       | makes second half false, so it becomes false
+        } while ( ( (userInput[0] != 'Y') && (userInput[0] != 'y') || !isLuggageConfirmed) && (userInput[0] != 'N') && (userInput[0] != 'n')  );
     }
 
 
@@ -103,7 +115,6 @@ public:
      * so we had to override it and add virtual in front of the functions in the Plane class
      *
      */
-
     void Economy() override
     {
         bool isFull = CheckSeatsAvailable(EconomyRange);
