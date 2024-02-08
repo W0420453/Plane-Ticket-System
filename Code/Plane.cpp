@@ -135,7 +135,7 @@ class Plane {
         return sectionString;
     }
 
-    void FirstClass() 
+   virtual void FirstClass()
     {
         bool isFull = CheckSeatsAvailable(FirstClassRange);
         string userInput;
@@ -185,7 +185,7 @@ class Plane {
         }
     }
 
-    void Economy() 
+    virtual void Economy()
     {
         bool isFull = CheckSeatsAvailable(EconomyRange);
         string userInput;
