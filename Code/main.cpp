@@ -1,13 +1,14 @@
 #include <iostream>
 // #include "Person.cpp"
-#include "Plane.cpp"
+//#include "Plane.cpp"
+#include "Cargo.cpp"
 // #include "Passenger.cpp"
 using namespace std;
 
 
 int main() {
 
-    Plane plane(10);
+    Cargo plane(10);
 
     bool wantToContinue = true;
     string menuSelection;

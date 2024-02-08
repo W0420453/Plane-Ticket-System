@@ -62,10 +62,12 @@ public:
         string something;
 
         do {
-            cout << "Would you like Luggage?: ";
+            cout << "Would you like to add Luggage? (Y/N): ";
             cin >> userInput;
 
             if ((userInput[0] == 'Y') || (userInput[0] == 'y')) {
+
+                // This needs to loop untill the luggage is valid, or the user no longer wants luggage
                 cout << "How much does your luggage weigh?";
                 cin >> LuggageWeight;
                 if (stof(LuggageWeight) > 0.0 && stof(LuggageWeight) < LuggageMaxWeight) {
@@ -74,7 +76,7 @@ public:
 
                     cout << "Description..: " << LuggageDescription << endl;
                     cout << "Weight..: " << LuggageWeight << endl;
-                    cout << "Are you ok with this: " << endl;
+                    cout << "Are you ok with this (Y/N): " << endl;
                     cin >> something;
 
                     if ((something[0] == 'Y') || (something[0] == 'y')) {
@@ -82,9 +84,10 @@ public:
                         LuggageArray[seatNumber].SetDescription(LuggageDescription);
                     }
                 } else {
-                    cout << "Invaild weight";
+                    cout << "Invalid weight" << endl;
                 }
-                LuggageArray[seatNumber];
+
+
             } else if ((userInput[0] == 'N') || (userInput[0] == 'n')) {
                 // Nothing
             } else {
@@ -96,7 +99,7 @@ public:
 
 
     /*
-     * Economy class function and FirstClass function had to override it in this cargo class because it wouldnt work
+     * Economy class function and FirstClass function had to override it in this cargo class because it wouldn't work,
      * so we had to override it and add virtual in front of the functions in the Plane class
      *
      */
